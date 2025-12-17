@@ -61,11 +61,22 @@ Make sure the script is executable and $PREFIX/bin is in your PATH (it is by def
 chmod +x svl.sh
 ```
 
+##Setup Autocompletion
+
+After cloning this repository and entering the project directory, create a symbolic link to the Bash completion script:
+
+```bash
+ln -s "$(pwd)/completions/svl.bash" "$PREFIX/etc/bash_completion.d/svl"
+```
+
+Then reload Bash (or open a new terminal) for the changes to take effect.
+
 ## Requirements
 
 * Termux
 * runit (`sv`)
 * dpkg
+* bash-completion (if you want auto completion)
 
 ## License
 

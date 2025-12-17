@@ -47,13 +47,15 @@ Show help message.
 
 ## Installation
 
-Clone the repository and create a symlink:
+Clone the repository and create a symlink to `svl.sh`:
 
 ```sh
-ln -s /path/to/svl/svl.sh $PREFIX/bin/svl
-```
+git clone (tba)
+cd svl
+ln -s "$(pwd)/svl.sh" "$PREFIX/bin/svl"
+````
 
-Make sure the script is executable:
+Make sure the script is executable and $PREFIX/bin is in your PATH (it is by default in Termux).
 
 ```sh
 chmod +x svl.sh

@@ -50,7 +50,7 @@ Show help message.
 Clone the repository and create a symlink to `svl.sh`:
 
 ```sh
-git clone (tba)
+git clone https://github.com/AndreOliveiraMendes/svl.git
 cd svl
 ln -s "$(pwd)/svl.sh" "$PREFIX/bin/svl"
 ````

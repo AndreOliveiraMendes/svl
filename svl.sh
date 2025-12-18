@@ -42,7 +42,7 @@ EOF
     who)
         shift || true
         for svc in "$@"; do
-            _svwho "$svc"
+            _svwho "$svc" || true
         done
         exit 0
         ;;
@@ -61,7 +61,7 @@ if [ "${1:-}" = "status" ]; then
     # svl status (todos)
     if [ $# -eq 0 ]; then
         for s in "$svcdir"/*; do
-            sv status "$s"
+            sv status "$s" || true
         done
         exit 0
     fi
@@ -69,7 +69,7 @@ if [ "${1:-}" = "status" ]; then
     # svl status svc1 svc2 ...
     for svc in "$@"; do
         if [ -d "$svcdir/$svc" ]; then
-            sv status "$svcdir/$svc"
+            sv status "$svcdir/$svc" || true
         else
             echo "❌ serviço não encontrado: $svc"
         fi

@@ -42,7 +42,7 @@ EOF
     who)
         shift || true
         for svc in "$@"; do
-            _svwho "$svc" || true
+            _svwho "$svc"
         done
         exit 0
         ;;

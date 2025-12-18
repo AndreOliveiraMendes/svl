@@ -14,5 +14,9 @@ _svwho() {
         return 1
     fi
 
-    dpkg -S "$svcdir/$svc"
+    if out=$(dpkg -S "$svcdir/$svc" 2>/dev/null); then
+        echo "$out"
+    else
+        echo "🧩 $svc: serviço local (não pertence a pacote)"
+    fi
 }

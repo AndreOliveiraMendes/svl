@@ -15,6 +15,7 @@ SVL_DIR="$(dirname "$SVL_PATH")"
 
 # Carrega módulos
 source "$SVL_DIR/lib/svwho.sh"
+source "$SVL_DIR/lib/svstatus.sh"
 
 svcdir="$PREFIX/var/service"
 
@@ -40,7 +41,13 @@ EOF
         exit 0
         ;;
     who)
-        shift || true
+        shift
+
+        if [ $# -eq 0 ]; then
+            echo "nenhum pacote especificado"
+            exit 1
+        fi
+
         for svc in "$@"; do
             _svwho "$svc"
         done
@@ -59,19 +66,27 @@ if [ "${1:-}" = "status" ]; then
     shift
 
     # svl status (todos)
+    svcs=()
+
     if [ $# -eq 0 ]; then
-        for s in "$svcdir"/*; do
-            sv status "$s" || true
+        svcs=("$svcdir"/*)
+    else
+        for svc in "$@"; do
+            svcs+=("$svcdir/$svc")
         done
-        exit 0
     fi
 
-    # svl status svc1 svc2 ...
-    for svc in "$@"; do
-        if [ -d "$svcdir/$svc" ]; then
-            sv status "$svcdir/$svc" || true
+    first=1
+    for s in "${svcs[@]}"; do
+        if [ -d "$s" ]; then
+            if [ $first -eq 1 ]; then
+                first=0
+            else
+                echo ""
+            fi
+            _svstatus "$s" 2>/dev/null
         else
-            echo "❌ serviço não encontrado: $svc"
+            echo "❌ serviço não encontrado: $(basename "$s")"
         fi
     done
     exit 0

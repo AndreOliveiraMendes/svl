@@ -5,7 +5,7 @@ _svwho() {
     local svcdir="$PREFIX/var/service"
 
     if [ -z "${svc:-}" ]; then
-        echo "Uso: svl who <serviço>" >&2
+        echo "Uso: _svl who <serviço>" >&2
         return 1
     fi
 

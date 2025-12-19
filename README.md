@@ -17,27 +17,21 @@ check their status, and identify which package provides each service.
 
 ```sh
 svl
-````
+```
 
 List available services.
 
 ```sh
-svl status
+svl status [services ...]
 ```
 
-Show status of all services.
+Show status of all services, If no service is specified, it lists the status of all available services.
 
 ```sh
-svl status <service> [service...]
+svl who [service...]
 ```
 
-Show status of one or more services.
-
-```sh
-svl who <service> [service...]
-```
-
-Show which package provides a service.
+Show which package provides a service, If no service is specified, it shows the provider for all available services.
 
 ```sh
 svl help
@@ -53,7 +47,7 @@ Clone the repository and create a symlink to `svl.sh`:
 git clone https://github.com/AndreOliveiraMendes/svl.git
 cd svl
 ln -s "$(pwd)/svl.sh" "$PREFIX/bin/svl"
-````
+```
 
 Make sure the script is executable and $PREFIX/bin is in your PATH (it is by default in Termux).
 
@@ -61,7 +55,7 @@ Make sure the script is executable and $PREFIX/bin is in your PATH (it is by def
 chmod +x svl.sh
 ```
 
-##Setup Autocompletion
+## Setup Autocompletion
 
 After cloning this repository and entering the project directory, create a symbolic link to the Bash completion script:
 
@@ -76,7 +70,13 @@ Then reload Bash (or open a new terminal) for the changes to take effect.
 * Termux
 * runit (`sv`)
 * dpkg
-* bash-completion (if you want auto completion)
+* bash-completion (if you want auto completion to work)
+
+## Internal Details
+
+In Termux, runit services are stored in:
+
+* `$PREFIX/var/service`
 
 ## License
 

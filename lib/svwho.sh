@@ -1,22 +1,21 @@
 # lib/svwho.sh
 
 _svwho() {
-    local svc="$1"
-    local svcdir="$PREFIX/var/service"
+    local svcpath="$1"
 
-    if [ -z "${svc:-}" ]; then
-        echo "Uso: _svl who <serviço>" >&2
+    if [ -z "${svcpath:-}" ]; then
+        echo "Uso: _svl who <caminho do serviço>" >&2
         return 1
     fi
 
-    if [ ! -d "$svcdir/$svc" ]; then
-        echo "❌ serviço não encontrado: $svc" >&2
+    if [ ! -d "$svcpath" ]; then
+        echo "❌ serviço não encontrado: $svcpath" >&2
         return 1
     fi
 
-    if out=$(dpkg -S "$svcdir/$svc" 2>/dev/null); then
+    if out=$(dpkg -S "$svcpath" 2>/dev/null); then
         echo "$out"
     else
-        echo "🧩 $svc: serviço local (não pertence a pacote)"
+        echo "🧩 $svcpath: serviço local (não pertence a pacote)"
     fi
 }

@@ -16,8 +16,10 @@ SVL_DIR="$(dirname "$SVL_PATH")"
 # Carrega módulos
 source "$SVL_DIR/lib/svwho.sh"
 source "$SVL_DIR/lib/svstatus.sh"
+source "$SVL_DIR/lib/utils.sh"
 
 svcdir="$PREFIX/var/service"
+first=1
 
 case "${1:-}" in
     help|-h|--help)
@@ -26,14 +28,11 @@ Uso:
   svl
       Lista serviços disponíveis
 
-  svl status
-      Mostra status de todos os serviços
+  svl status [serviço...]
+      Mostra status de um ou mais serviços, caso nenhum serviço seja especificado, a função sera aplicada a todos os serviços existentes
 
-  svl status <serviço> [serviço...]
-      Mostra status de um ou mais serviços
-
-  svl who <serviço> [serviço...]
-      Mostra de qual pacote vem o serviço
+  svl who [serviço...]
+      Mostra de qual pacote vem o serviço, caso nenhum serviço seja especificado, a função sera aplicada a todos os serviços existentes
 
   svl help | -h | --help
       Mostra esta ajuda
@@ -43,52 +42,49 @@ EOF
     who)
         shift
 
-        if [ $# -eq 0 ]; then
-            echo "nenhum pacote especificado"
-            exit 1
-        fi
+        mapfile -t svcs < <(_resolve_svcs "$@")
 
-        for svc in "$@"; do
-            _svwho "$svc"
+        for s in "${svcs[@]}"; do
+            if [ $first -eq 1 ]; then
+                first=0
+            else
+                echo ""
+            fi
+            if [ -d "$s" ]; then
+                _svwho "$s" 2>/dev/null
+            else
+                echo "❌ serviço não encontrado: $(basename "$s")"
+            fi
         done
         exit 0
         ;;
     status)
         shift
 
-	svcs=()
+        mapfile -t svcs < <(_resolve_svcs "$@")
 
-	if [ $# -eq 0 ]; then
-	    svcs=("$svcdir"/*)
-	else
-	    for svc in "$@"; do
-		svcs+=("$svcdir/$svc")
+	    for s in "${svcs[@]}"; do
+            if [ $first -eq 1 ]; then
+                first=0
+            else
+                echo ""
+            fi
+	        if [ -d "$s" ]; then
+		        _svstatus "$s" 2>/dev/null
+	        else
+		        echo "❌ serviço não encontrado: $(basename "$s")"
+	        fi
 	    done
-	fi
-
-	first=1
-	for s in "${svcs[@]}"; do
-	    if [ -d "$s" ]; then
-		if [ $first -eq 1 ]; then
-		    first=0
-		else
-		    echo ""
-		fi
-		_svstatus "$s" 2>/dev/null
-	    else
-		echo "❌ serviço não encontrado: $(basename "$s")"
-	    fi
-	done
-	exit 0
-	;;
+	    exit 0
+	    ;;
     '')
-	ls "$svcdir"
-	exit 0
-	;;
+	    ls "$svcdir"
+	    exit 0
+	    ;;
     *)
-	echo "❌ comando inválido"
-	echo "Use: svl help"
-	exit 1
-	;;
+	    echo "❌ comando inválido"
+	    echo "Use: svl help"
+	    exit 1
+	    ;;
 esac
 

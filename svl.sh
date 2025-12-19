@@ -81,16 +81,14 @@ EOF
 	done
 	exit 0
 	;;
+    '')
+	ls "$svcdir"
+	exit 0
+	;;
+    *)
+	echo "❌ comando inválido"
+	echo "Use: svl help"
+	exit 1
+	;;
 esac
-
-# svl (sem argumentos) → ls
-if [ $# -eq 0 ]; then
-    ls "$svcdir"
-    exit 0
-fi
-
-# Qualquer outra coisa → erro + dica
-echo "❌ comando inválido"
-echo "Use: svl help"
-exit 1
 

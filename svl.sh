@@ -53,42 +53,39 @@ EOF
         done
         exit 0
         ;;
+    status)
+        shift
+
+	svcs=()
+
+	if [ $# -eq 0 ]; then
+	    svcs=("$svcdir"/*)
+	else
+	    for svc in "$@"; do
+		svcs+=("$svcdir/$svc")
+	    done
+	fi
+
+	first=1
+	for s in "${svcs[@]}"; do
+	    if [ -d "$s" ]; then
+		if [ $first -eq 1 ]; then
+		    first=0
+		else
+		    echo ""
+		fi
+		_svstatus "$s" 2>/dev/null
+	    else
+		echo "❌ serviço não encontrado: $(basename "$s")"
+	    fi
+	done
+	exit 0
+	;;
 esac
 
 # svl (sem argumentos) → ls
 if [ $# -eq 0 ]; then
     ls "$svcdir"
-    exit 0
-fi
-
-# svl status ...
-if [ "${1:-}" = "status" ]; then
-    shift
-
-    # svl status (todos)
-    svcs=()
-
-    if [ $# -eq 0 ]; then
-        svcs=("$svcdir"/*)
-    else
-        for svc in "$@"; do
-            svcs+=("$svcdir/$svc")
-        done
-    fi
-
-    first=1
-    for s in "${svcs[@]}"; do
-        if [ -d "$s" ]; then
-            if [ $first -eq 1 ]; then
-                first=0
-            else
-                echo ""
-            fi
-            _svstatus "$s" 2>/dev/null
-        else
-            echo "❌ serviço não encontrado: $(basename "$s")"
-        fi
-    done
     exit 0
 fi
 

@@ -8,7 +8,7 @@ _svl() {
 
     # First argument
     if [ $COMP_CWORD -eq 1 ]; then
-        COMPREPLY=($(compgen -W "status who help" -- "$cur"))
+        COMPREPLY=($(compgen -W "list status who help up down" -- "$cur"))
         return
     fi
 

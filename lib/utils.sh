@@ -13,3 +13,10 @@ _resolve_svcs() {
 
     printf "%s\n" "${svcs[@]}"
 }
+
+_ensure_arg() {
+    if [ $# -eq 0 ]; then
+        echo "error: expected at least one argument"
+        exit 1
+    fi
+}

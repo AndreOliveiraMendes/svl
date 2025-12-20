@@ -5,6 +5,8 @@ PKG=svl
 VERSION=$(grep '^SVL_VERSION=' svl.sh | cut -d'"' -f2)
 DEST=pkg/$PKG
 
+sed -i '1s/svl \([0-9]\+\.[0-9]\+\.[0-9]\+\)/svl '"$VERSION"'/g' man/svl.1
+
 rm -rf pkg
 mkdir -p "$DEST"
 

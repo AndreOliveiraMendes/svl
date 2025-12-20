@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # svl - runit wrapper for Termux
 # version:
-SVL_VERSION="0.1.0"
+SVL_VERSION="0.2.0"
 
 set -o errexit
 set -o nounset
@@ -41,6 +41,12 @@ Uso:
 
   svl who [serviço...]
       Mostra de qual pacote vem o serviço, caso nenhum serviço seja especificado, a função sera aplicada a todos os serviços existentes
+
+  svl up [serviço]
+      começa o serviço usando sv up, se mais de um serviço foi dado somente o primeiro é considerado
+
+  svl down [serviço]
+      para o serviço usando sv down, se mais de um serviço foi dado somente o primeiro é considerado
 
   svl help | -h | --help
       Mostra esta ajuda
@@ -93,6 +99,26 @@ EOF
 	    ls "$svcdir"
 	    exit 0
 	    ;;
+    up|down)
+        action=$1
+        shift
+
+        _ensure_arg "$@"
+
+        svc=$1
+
+        case "$action" in
+            up)   verb="started" ;;
+            down) verb="stopped" ;;
+        esac
+
+        if sv "$action" "$svc"; then
+            echo "Service '$svc' $verb successfully"
+        else
+            echo "Failed to $action service '$svc'" >&2
+            exit 1
+        fi
+        ;;
     *)
 	    echo "❌ comando inválido"
 	    echo "Use: svl help"

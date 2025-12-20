@@ -6,17 +6,24 @@ set -o errexit
 set -o nounset
 set -o pipefail
 
-# Descobre o diretório real do script
-SVL_PATH="$(realpath "${BASH_SOURCE[0]}" 2>/dev/null)" || {
-    echo "Erro: não foi possível resolver caminho do script" >&2
-    exit 1
-}
-SVL_DIR="$(dirname "$SVL_PATH")"
+# Detecta diretório das libs
+if [ -d "$PREFIX/lib/svl" ]; then
+    # modo instalado via pacote
+    LIBDIR="$PREFIX/lib/svl"
+else
+    # modo local (repo / symlink)
+    SVL_PATH="$(realpath "${BASH_SOURCE[0]}" 2>/dev/null)" || {
+        echo "Erro: não foi possível resolver caminho do script" >&2
+        exit 1
+    }
+    SCRIPT_DIR="$(dirname "$SVL_PATH")"
+    LIBDIR="$SCRIPT_DIR/lib"
+fi
 
 # Carrega módulos
-source "$SVL_DIR/lib/svwho.sh"
-source "$SVL_DIR/lib/svstatus.sh"
-source "$SVL_DIR/lib/utils.sh"
+. "$LIBDIR/utils.sh"
+. "$LIBDIR/svwho.sh"
+. "$LIBDIR/svstatus.sh"
 
 svcdir="$PREFIX/var/service"
 first=1

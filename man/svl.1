@@ -1,0 +1,50 @@
+.TH SVL 1 "December 2025" "svl 0.1.0" "User Commands"
+.SH NAME
+svl \- simple service lister for Termux (runit)
+
+.SH SYNOPSIS
+.B svl
+.RI [ command ] " [service ...]"
+
+.SH DESCRIPTION
+\fBsvl\fR is a small wrapper around the \fBsv\fR command (runit),
+designed for Termux.
+
+It allows listing services, checking their status, and identifying
+which package provides each service.
+
+.SH COMMANDS
+.TP
+.B svl
+List available services.
+
+.TP
+.B svl status [service ...]
+Show status for one or more services.
+If no service is specified, all services are shown.
+
+.TP
+.B svl who [service ...]
+Show which package provides a service.
+If no service is specified, all services are shown.
+
+.SH FILES
+.TP
+.B $PREFIX/var/service
+Directory where runit services are stored in Termux.
+
+.SH REQUIREMENTS
+.TP
+.B Termux
+.TP
+.B runit (sv)
+.TP
+.B dpkg
+
+.SH SEE ALSO
+.BR sv (8),
+.BR dpkg (1)
+
+.SH AUTHOR
+Andre Oliveira Mendes
+

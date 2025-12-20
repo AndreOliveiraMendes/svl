@@ -1,7 +1,7 @@
 # intern helper functions
 
 _resolve_svcs() {
-    local svcs=()
+    local svcs
 
     if [ $# -eq 0 ]; then
         svcs=("$svcdir"/*)
@@ -22,6 +22,7 @@ _ensure_arg() {
 }
 
 _sv_action() {
+    local action verb_success verb_fail svc
     action=$1
     shift
 
@@ -30,14 +31,14 @@ _sv_action() {
     svc=$1
 
     case "$action" in
-        up) verb="started" ;;
-        down) verb="stopped" ;;
+        up) verb_success="started" verb_fail="start" ;;
+        down) verb_success="stopped" verb_fail="stop" ;;
     esac
 
     if sv "$action" "$svc"; then
-        echo "Service '$svc' $verb succeeded"
+        echo "Service '$svc' $verb_success succeeded"
     else
-        echo "Failed to $verb service '$svc'" >&2
+        echo "Failed to $verb_fail service '$svc'" >&2
         exit 1
     fi
 }

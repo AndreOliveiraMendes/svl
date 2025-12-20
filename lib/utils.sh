@@ -20,3 +20,24 @@ _ensure_arg() {
         exit 1
     fi
 }
+
+_sv_action() {
+    action=$1
+    shift
+
+    _require_service "$@"
+
+    svc=$1
+
+    case "$action" in
+        up) verb="started" ;;
+        down) verb="stopped" ;;
+    esac
+
+    if sv "$action" "$svc"; then
+        echo "Service '$svc' $verb succeeded"
+    else
+        echo "Failed to $verb service '$svc'" >&2
+        exit 1
+    fi
+}

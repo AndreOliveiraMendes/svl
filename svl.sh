@@ -100,24 +100,7 @@ EOF
 	    exit 0
 	    ;;
     up|down)
-        action=$1
-        shift
-
-        _ensure_arg "$@"
-
-        svc=$1
-
-        case "$action" in
-            up)   verb="started" ;;
-            down) verb="stopped" ;;
-        esac
-
-        if sv "$action" "$svc"; then
-            echo "Service '$svc' $verb successfully"
-        else
-            echo "Failed to $action service '$svc'" >&2
-            exit 1
-        fi
+        _sv_action "$@"
         ;;
     *)
 	    echo "❌ comando inválido"

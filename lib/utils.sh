@@ -25,7 +25,7 @@ _sv_action() {
     action=$1
     shift
 
-    _require_service "$@"
+    _ensure_arg "$@"
 
     svc=$1
 

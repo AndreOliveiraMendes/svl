@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 # svl - runit wrapper for Termux
-# version: 0.1.0
+# version:
+SVL_VERSION="0.1.0"
 
 set -o errexit
 set -o nounset
@@ -32,7 +33,7 @@ case "${1:-}" in
     help|-h|--help)
         cat <<'EOF'
 Uso:
-  svl
+  svl [list]
       Lista serviços disponíveis
 
   svl status [serviço...]
@@ -44,6 +45,10 @@ Uso:
   svl help | -h | --help
       Mostra esta ajuda
 EOF
+        exit 0
+        ;;
+    --version|-V)
+        echo "svl $SVL_VERSION"
         exit 0
         ;;
     who)
@@ -84,7 +89,7 @@ EOF
 	    done
 	    exit 0
 	    ;;
-    '')
+    ''|list)
 	    ls "$svcdir"
 	    exit 0
 	    ;;

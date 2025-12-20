@@ -19,13 +19,13 @@ check their status, and identify which package provides each service.
 svl
 ```
 
-List available services.
+List available services, you can also use `svl list` which does the same thing
 
 ```sh
 svl status [services ...]
 ```
 
-Show status of all services, If no service is specified, it lists the status of all available services.
+Show the status of all services. If no service is specified, it shows the status of all available services.
 
 ```sh
 svl who [service...]
@@ -39,31 +39,7 @@ svl help
 
 Show help message.
 
-## Installation
-
-Clone the repository and create a symlink to `svl.sh`:
-
-```sh
-git clone https://github.com/AndreOliveiraMendes/svl.git
-cd svl
-ln -s "$(pwd)/svl.sh" "$PREFIX/bin/svl"
-```
-
-Make sure the script is executable and $PREFIX/bin is in your PATH (it is by default in Termux).
-
-```sh
-chmod +x svl.sh
-```
-
-## Setup Autocompletion
-
-After cloning this repository and entering the project directory, create a symbolic link to the Bash completion script:
-
-```bash
-ln -s "$(pwd)/completions/svl.bash" "$PREFIX/etc/bash_completion.d/svl"
-```
-
-Then reload Bash (or open a new terminal) for the changes to take effect.
+you can also use `man svl` to read the manual pages for svl
 
 ## Requirements
 
@@ -77,6 +53,82 @@ Then reload Bash (or open a new terminal) for the changes to take effect.
 In Termux, runit services are stored in:
 
 * `$PREFIX/var/service`
+
+Each directory represents a runit service.
+
+## Instaling
+
+You can install `svl` in two ways:
+
+Clone the repository:
+
+```sh
+git clone https://github.com/AndreOliveiraMendes/svl.git
+cd svl
+```
+
+from there, you have 2 option
+
+### Local installation (symlink)
+
+from inside the svl folder, run the following comand to create a symlink to svl.sh
+
+```sh
+ln -s "$(pwd)/svl.sh" "$PREFIX/bin/svl"
+```
+
+Make sure the script is executable and $PREFIX/bin is in your PATH (it is by default in Termux).
+
+```sh
+chmod +x svl.sh
+```
+
+to setup the auto complet, proced in similiar way as before, creating a symlink to completion script
+
+```bash
+ln -s "$(pwd)/completions/svl.bash" "$PREFIX/etc/bash_completion.d/svl"
+```
+
+Then reload Bash (or open a new terminal) for the changes to take effect.
+
+### Local installation (package)
+
+from inside the svl folder, run the following script
+
+```sh
+./script/pkg-build.sh
+```
+
+this should generate a pkg folder, then, run:
+
+```sh
+dpkg -i pkg/svl.deb
+```
+
+now you can use svl, but you need to reload bash (or open a new terminal) to use auto complet
+
+## Examples
+
+### Listing services
+
+```sh
+$ svl
+mysqld ssh-agent sshd
+```
+
+### checking status:
+
+```sh
+$ svl status sshd
+service path: /data/data/com.termux/files/usr/var/service/sshd
+run: /data/data/com.termux/files/usr/var/service/sshd: (pid 15048) 75185s; run: log: (pid 15047) 75185s
+```
+
+Other available commands:
+
+* `svl who [service...]` — show which package provides a service (also indicates locally created services)
+* `svl help` — show the help message
+* `man svl` — open the manual page for svl
 
 ## License
 

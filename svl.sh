@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # svl - runit wrapper for Termux
 # version:
-SVL_VERSION="0.2.0"
+SVL_VERSION="1.0.0"
 
 set -o errexit
 set -o nounset
@@ -65,8 +65,17 @@ Uso:
   svl down [serviço]
       para o serviço usando sv down, se mais de um serviço foi dado somente o primeiro é considerado
 
+  svl enable [serviço]
+      habilita o auto-start do serviço
+
+  svl disable [serviço]
+      desabilita o auto-start do serviço
+
   svl help | -h | --help
       Mostra esta ajuda
+
+  svl --version | -V
+      Mostra a versão atual
 EOF
         exit 0
         ;;

@@ -15,7 +15,7 @@ _svl() {
     # svl status <service...> or anything that accept arguments
     case "${COMP_WORDS[1]}" in
         status|who|up|down|enable|disable)
-            if [-d "$svcdir" ]; then
+            if [ -d "$svcdir" ]; then
                 COMPREPLY=($(compgen -W "$(ls "$scvdir")" -- "$cur"))
             fi
             ;;

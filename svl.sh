@@ -7,18 +7,35 @@ set -o errexit
 set -o nounset
 set -o pipefail
 
+found=0
+new_args=()
+
+for arg in "$@"; do
+    if [ "$arg" = "--script" ]; then
+        found=1
+    else
+        new_args+=("$arg")
+    fi
+done
+
+set -- "${new_args[@]}"
+
 # Detecta diretório das libs
-if [ -d "$PREFIX/lib/svl" ]; then
-    # modo instalado via pacote
-    LIBDIR="$PREFIX/lib/svl"
+if [ -d "$PREFIX/lib/svl" ] && [ $found -eq 0 ]; then
+    LIBMODE="lib"
 else
-    # modo local (repo / symlink)
+    LIBMODE="script"
+fi
+
+if [[ $LIBMODE == "script" ]]; then
     SVL_PATH="$(realpath "${BASH_SOURCE[0]}" 2>/dev/null)" || {
-        echo "Erro: não foi possível resolver caminho do script" >&2
+        echo "Erro: não foi possivel resolver o caminho do script" >&2
         exit 1
     }
     SCRIPT_DIR="$(dirname "$SVL_PATH")"
     LIBDIR="$SCRIPT_DIR/lib"
+else
+    LIBDIR="$PREFIX/lib/svl"
 fi
 
 # Carrega módulos
@@ -99,7 +116,7 @@ EOF
 	    ls "$svcdir"
 	    exit 0
 	    ;;
-    up|down)
+    up|down|enable|disable)
         _sv_action "$@"
         ;;
     *)

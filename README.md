@@ -116,7 +116,7 @@ $ svl
 mysqld ssh-agent sshd
 ```
 
-### checking status:
+### Checking status
 
 ```sh
 $ svl status sshd
@@ -127,7 +127,11 @@ run: /data/data/com.termux/files/usr/var/service/sshd: (pid 15048) 75185s; run: 
 Other available commands:
 
 * `svl who [service...]` — show which package provides a service (also indicates locally created services)
-* `svl help` — show the help message
+* `svl help`, `svl --help`, or `svl -h` — show the help message
+
+There may be other commands not listed here.
+If in doubt, use `svl help` or read the manual page:
+
 * `man svl` — open the manual page for svl
 
 ## License

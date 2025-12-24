@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # svl - runit wrapper for Termux
 # version:
-SVL_VERSION="1.0.0"
+SVL_VERSION="1.0.1"
 
 set -o errexit
 set -o nounset
@@ -39,6 +39,7 @@ else
 fi
 
 # Carrega módulos
+. "$LIBDIR/help.sh"
 . "$LIBDIR/utils.sh"
 . "$LIBDIR/svwho.sh"
 . "$LIBDIR/svstatus.sh"
@@ -48,35 +49,7 @@ first=1
 
 case "${1:-}" in
     help|-h|--help)
-        cat <<'EOF'
-Uso:
-  svl [list]
-      Lista serviços disponíveis
-
-  svl status [serviço...]
-      Mostra status de um ou mais serviços, caso nenhum serviço seja especificado, a função sera aplicada a todos os serviços existentes
-
-  svl who [serviço...]
-      Mostra de qual pacote vem o serviço, caso nenhum serviço seja especificado, a função sera aplicada a todos os serviços existentes
-
-  svl up [serviço]
-      começa o serviço usando sv up, se mais de um serviço foi dado somente o primeiro é considerado
-
-  svl down [serviço]
-      para o serviço usando sv down, se mais de um serviço foi dado somente o primeiro é considerado
-
-  svl enable [serviço]
-      habilita o auto-start do serviço
-
-  svl disable [serviço]
-      desabilita o auto-start do serviço
-
-  svl help | -h | --help
-      Mostra esta ajuda
-
-  svl --version | -V
-      Mostra a versão atual
-EOF
+        _help
         exit 0
         ;;
     --version|-V)

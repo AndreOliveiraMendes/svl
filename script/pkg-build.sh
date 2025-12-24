@@ -2,11 +2,13 @@
 set -e
 
 PKG=svl
-VERSION=$(grep '^SVL_VERSION=' $PKG.sh | cut -d'"' -f2)
+#VERSION=$(grep '^'"${PKG^^}"'_VERSION=' $PKG.sh | cut -d'"' -f2)
+VERSION=$(grep "^${PKG^^}_VERSION=" $PKG.sh | cut -d'"' -f2)
 DEST=pkg/$PKG
 CAT=1
 
-sed -i '1s/svl \([0-9]\+\.[0-9]\+\.[0-9]\+\)/svl '"$VERSION"'/g' man/$PKG.$CAT
+#sed -i '1s/'"$PKG"' \([0-9]\+\.[0-9]\+\.[0-9]\+\)/'"$PKG"' '"$VERSION"'/g' man/$PKG.$CAT
+sed -i "1s/${PKG} \([0-9]\+\.[0-9]\+\.[0-9]\+\)/${PKG} ${VERSION}/g" man/$PKG.$CAT
 
 rm -rf pkg
 mkdir -p "$DEST"

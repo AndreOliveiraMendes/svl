@@ -2,30 +2,31 @@
 set -e
 
 PKG=svl
-VERSION=$(grep '^SVL_VERSION=' svl.sh | cut -d'"' -f2)
+VERSION=$(grep '^SVL_VERSION=' $PKG.sh | cut -d'"' -f2)
 DEST=pkg/$PKG
+CAT=1
 
-sed -i '1s/svl \([0-9]\+\.[0-9]\+\.[0-9]\+\)/svl '"$VERSION"'/g' man/svl.1
+sed -i '1s/svl \([0-9]\+\.[0-9]\+\.[0-9]\+\)/svl '"$VERSION"'/g' man/$PKG.$CAT
 
 rm -rf pkg
 mkdir -p "$DEST"
 
 # bin
-install -Dm755 svl.sh \
-  "$DEST/data/data/com.termux/files/usr/bin/svl"
+install -Dm755 *.sh \
+  "$DEST/data/data/com.termux/files/usr/bin/$PKG"
 
 # libs
-mkdir -p "$DEST/data/data/com.termux/files/usr/lib/svl/"
+mkdir -p "$DEST/data/data/com.termux/files/usr/lib/$PKG/"
 install -Dm644 lib/*.sh \
-  "$DEST/data/data/com.termux/files/usr/lib/svl/"
+  "$DEST/data/data/com.termux/files/usr/lib/$PKG/"
 
 # completion
-install -Dm644 completions/svl.bash \
-  "$DEST/data/data/com.termux/files/usr/etc/bash_completion.d/svl"
+install -Dm644 completions/*.bash \
+  "$DEST/data/data/com.termux/files/usr/etc/bash_completion.d/$PKG"
 
 # man
-install -Dm644 man/svl.1 \
-  "$DEST/data/data/com.termux/files/usr/share/man/man1/svl.1"
+install -Dm644 man/*.$CAT \
+  "$DEST/data/data/com.termux/files/usr/share/man/man$CAT/$PKG.$CAT"
 
 # control
 cat > control <<EOF
